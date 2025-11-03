@@ -64,7 +64,7 @@
       color: white;
       font-size: 16px;
       opacity: 0;
-      transition: opacity 2s ease-in-out;
+      transition: opacity 1.5s ease-in-out;
       z-index: 10;
     }
 
@@ -80,13 +80,54 @@
       from { transform: translateY(0) scale(1); opacity: 1; }
       to { transform: translateY(-100vh) scale(2); opacity: 0; }
     }
+
+    /* 音乐控制按钮 */
+    #musicBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(45deg, #ff8fab, #ffc0cb);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 143, 171, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      z-index: 999;
+    }
+
+    #musicBtn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 14px rgba(255, 143, 171, 0.6);
+    }
+
+    #musicBtn svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
   </style>
 </head>
 <body>
+
+  <!-- 背景音乐 -->
+  <audio id="bgMusic" src="汪苏泷 - 小星星.mp3" loop></audio>
+
+  <!-- 中心开始界面 -->
   <div class="center-box" id="startPage">
     <h1>✨ 这是为 <b>李奥曼</b> 专门定制的小程序 ✨</h1>
     <p>准备好接受惊喜了吗？💗</p>
     <button class="btn" onclick="startMagic()">点击开启浪漫</button>
+  </div>
+
+  <!-- 音乐开关按钮 -->
+  <div id="musicBtn" onclick="toggleMusic()" title="开启/关闭音乐">
+    <svg id="musicIcon" viewBox="0 0 24 24">
+      <path d="M3 10v4h4l5 5V5l-5 5H3zM14.5 12c0-1.77-1.02-3.29-2.5-4.03v8.06c1.48-.74 2.5-2.26 2.5-4.03z"/>
+    </svg>
   </div>
 
   <script>
@@ -112,8 +153,21 @@
       "#b5ead7", "#c7ceea", "#fbcffb", "#ffd6e0", "#fff5ba"
     ];
 
+    const music = document.getElementById("bgMusic");
+    const musicIcon = document.getElementById("musicIcon");
+
+    function toggleMusic() {
+      if (music.paused) {
+        music.play();
+      } else {
+        music.pause();
+      }
+    }
+
     function startMagic() {
       document.getElementById("startPage").remove();
+      // 自动播放音乐
+      music.play().catch(()=>{});
       createHearts();
       setInterval(() => createHearts(), 600);
       startPopups();
@@ -140,8 +194,7 @@
         div.style.top = Math.random() * (window.innerHeight - 100) + "px";
         document.body.appendChild(div);
         setTimeout(() => div.style.opacity = 1, 50);
-        // 弹窗不删除，让它叠加堆叠出温馨画面
-      }, 400);
+      }, 250); // 弹窗速度加快
     }
   </script>
 </body>
